@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import DOMPurify from 'isomorphic-dompurify';
 import { useJobStatus } from '@/lib/hooks/useJobStatus';
+import { apiUrl } from '@/lib/api';
 
 interface ContentViewState {
   [key: number]: {
@@ -134,7 +135,7 @@ export default function JobStatusPage() {
 
     try {
       console.log(`Generating streaming AI summary for job ${jobId}...`);
-      const response = await fetch('/api/summarize', {
+      const response = await fetch(apiUrl('/api/summarize'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

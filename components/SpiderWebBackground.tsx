@@ -2,6 +2,7 @@
 
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { assetUrl } from '@/lib/api';
 
 interface Point {
   x: number;
@@ -234,7 +235,7 @@ export default function SpiderWebBackground() {
       />
       {spider && !imageError && (
         <img
-          src="/images/spider-placeholder.png"
+          src={assetUrl('/images/spider-placeholder.png')}
           alt="spider"
           className="pointer-events-auto absolute h-8 w-8 cursor-pointer transition-transform hover:scale-110"
           style={{

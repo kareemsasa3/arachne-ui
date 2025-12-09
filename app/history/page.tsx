@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Trash2 } from 'lucide-react';
+import { apiUrl } from '@/lib/api';
 
 interface Snapshot {
   id: string;
@@ -128,7 +129,7 @@ export default function HistoryPage() {
     setIsRescrapingId(snapshotId);
     
     try {
-      const response = await fetch('/api/scrape', {
+      const response = await fetch(apiUrl('/api/scrape'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,25 +1,11 @@
-# Use Node.js 20 for development (not Alpine so native dependencies remain compatible)
+# services/arachne-ui/Dockerfile.dev
+# Next.js dev server with the same simple strategy: root user, host-mounted code.
+
 FROM node:20
 
-# Set working directory
+ENV NODE_ENV=development
+
 WORKDIR /app
 
-# Copy package manifests and install dependencies
-COPY package*.json ./
-RUN npm ci
-
-# Create non-root user/group for security
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 --gid 1001 nodejs
-
-# Drop privileges before running the app
-RUN chown -R nodejs:nodejs /app
-USER nodejs
-
-# Expose a port that will be used by docker-compose.dev.yml
-ENV DEV_ARACHNE_UI_PORT=3002
-EXPOSE 3002
-
-# Start the dev server; the compose file overrides the command with explicit host/port flags
+# Next.js dev server; compose will pass host/port
 CMD ["npm", "run", "dev"]
-
