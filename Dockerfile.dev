@@ -1,0 +1,25 @@
+# Use Node.js 20 for development (not Alpine so native dependencies remain compatible)
+FROM node:20
+
+# Set working directory
+WORKDIR /app
+
+# Copy package manifests and install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Create non-root user/group for security
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 --gid 1001 nodejs
+
+# Drop privileges before running the app
+RUN chown -R nodejs:nodejs /app
+USER nodejs
+
+# Expose a port that will be used by docker-compose.dev.yml
+ENV DEV_ARACHNE_UI_PORT=3002
+EXPOSE 3002
+
+# Start the dev server; the compose file overrides the command with explicit host/port flags
+CMD ["npm", "run", "dev"]
+
