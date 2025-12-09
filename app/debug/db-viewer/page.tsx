@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import DOMPurify from 'isomorphic-dompurify';
+import { apiUrl } from '@/lib/api';
 
 type SnapshotLite = {
   id: string;
@@ -301,7 +302,7 @@ export default function DatabaseViewerPage() {
 
   const handleRescrape = async (url: string) => {
     try {
-      const res = await fetch('/api/scrape', {
+      const res = await fetch(apiUrl('/api/scrape'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ urls: [url] }),

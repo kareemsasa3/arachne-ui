@@ -1,4 +1,5 @@
-const ARACHNE_URL = process.env.NEXT_PUBLIC_ARACHNE_API_URL || 'http://localhost:8080';
+// Server-side: use internal Docker URL, not the browser-facing proxy URL
+const ARACHNE_URL = process.env.ARACHNE_API_URL || 'http://localhost:8080';
 
 export const dynamic = 'force-dynamic';
 

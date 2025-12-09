@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { apiUrl } from '@/lib/api';
 
 type Status = 'loading' | 'up' | 'down';
 
@@ -12,7 +13,7 @@ export default function ArachneStatus() {
 
     const check = async () => {
       try {
-        const res = await fetch('/api/arachne-health', { cache: 'no-store' });
+        const res = await fetch(apiUrl('/api/arachne-health'), { cache: 'no-store' });
         if (cancelled) return;
         setStatus(res.ok ? 'up' : 'down');
       } catch {

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { apiUrl } from '@/lib/api';
 
 type Role = 'user' | 'assistant';
 
@@ -93,7 +94,7 @@ export function useChat(initialMessages: ChatMessage[] = []) {
       abortRef.current = controller;
 
       try {
-        const resp = await fetch('/api/chat', {
+        const resp = await fetch(apiUrl('/api/chat'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
