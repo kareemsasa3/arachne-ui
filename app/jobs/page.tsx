@@ -86,7 +86,11 @@ export default function NewJobPage() {
       }
     };
 
-    let payload: { urls?: string[]; site_url?: string; name?: string } = {};
+    let payload: { 
+      urls?: string[]; 
+      site_url?: string; 
+      name?: string;
+    } = {};
 
     if (mode === 'single') {
       const { validUrls, errors } = parseUrls(url);
@@ -107,12 +111,18 @@ export default function NewJobPage() {
         .split('\n')
         .map((line) => line.trim())
         .filter(Boolean);
-      const siteUrl = siteUrls[0] || '';
 
-      if (!siteUrl) {
+      if (siteUrls.length === 0) {
         setMessage({ type: 'error', text: 'Please enter a site URL' });
         return;
       }
+
+      if (siteUrls.length > 1) {
+        setMessage({ type: 'error', text: 'Full site crawl accepts only one starting URL. Use Single URLs mode for multiple pages.' });
+        return;
+      }
+
+      const siteUrl = siteUrls[0];
 
       try {
         new URL(siteUrl);
@@ -121,7 +131,10 @@ export default function NewJobPage() {
         return;
       }
 
-      payload = { site_url: siteUrl, name: jobName || undefined };
+      payload = { 
+        site_url: siteUrl, 
+        name: jobName || undefined
+      };
     }
 
     setIsSubmitting(true);
@@ -247,7 +260,7 @@ export default function NewJobPage() {
                 />
                 <span className="font-medium text-white">Full Site Crawl</span>
                 <p className="text-xs text-white/70 mt-1 ml-6">
-                  Crawl multiple pages from a single site
+                  Full Site Crawl - Crawl pages from a single starting URL, following pagination links
                 </p>
               </label>
             </div>
@@ -275,7 +288,7 @@ export default function NewJobPage() {
           {/* URL Input */}
           <div>
             <label htmlFor="url" className="block text-sm font-medium mb-2 text-white">
-              {mode === 'single' ? 'URLs' : 'Site URL(s)'} <span className="text-red-500">*</span>
+              {mode === 'single' ? 'URLs' : 'Starting URL'} <span className="text-red-500">*</span>
             </label>
             {mode === 'single' ? (
               <textarea
@@ -292,7 +305,7 @@ export default function NewJobPage() {
                 id="url"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="Enter site URL(s) (one per line)"
+                placeholder="https://example.com/start-page"
                 rows={4}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white/90 text-gray-900"
                 disabled={isSubmitting}
